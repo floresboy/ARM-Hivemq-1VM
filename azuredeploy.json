@@ -82,7 +82,7 @@
      {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
-            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom1883Inbound')]",
+            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAny1883Inbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
             ],
@@ -93,7 +93,7 @@
                 "sourceAddressPrefix": "*",
                 "destinationAddressPrefix": "*",
                 "access": "Allow",
-                "priority": 110,
+                "priority": 110, 
                 "direction": "Inbound",
                 "sourcePortRanges": [],
                 "destinationPortRanges": [],
@@ -104,7 +104,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
-            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom8080Inbound')]",
+            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAny8080Inbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
             ],
