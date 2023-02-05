@@ -10,3 +10,6 @@ tested : 5 febr 23 > OK
 
 The following resources will be deployed bis this template:
 - An Virtual Machine with HiveMQ version of your choise.
+
+see also
+https://www.hivemq.com/blog/connect-hivemq-and-azure-event-hubs/
