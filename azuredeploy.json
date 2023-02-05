@@ -179,13 +179,9 @@
             },
             "dependsOn": [
                 "nicLoop",
-                "[variables('storageAccountName')]",
-                "[variables('asName')]"
+                "[variables('storageAccountName')]"
             ],
             "properties": {
-                "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('asName'))]"
-                },
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
                 },
