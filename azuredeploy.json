@@ -159,7 +159,7 @@
                 "securityRules": [
                     {
                         "name": "AllowAnyCustom1883Inbound",
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom1883Inbound')]",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny1883Inbound')]",
                         "type": "Microsoft.Network/networkSecurityGroups/securityRules",
                         "properties": {
                             "protocol": "*",
@@ -197,7 +197,7 @@
                     },
                     {
                         "name": "AllowAnyCustom8080Inbound",
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom8080Inbound')]",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny8080Inbound')]",
                         "type": "Microsoft.Network/networkSecurityGroups/securityRules",
                         "properties": {
                             "protocol": "*",
