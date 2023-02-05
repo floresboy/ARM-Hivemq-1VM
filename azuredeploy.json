@@ -92,8 +92,7 @@
             },
             "resources": [
                 {
-                    // "type": "blobServices/containers",
-                    "type": "containers",
+                    "type": "blobServices/containers",
                     "apiVersion": "2019-06-01",
                     "name": "[concat('default/', variables('containerName'))]",
                     "dependsOn": [
