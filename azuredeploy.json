@@ -48,7 +48,7 @@
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "ubuntuOSVersion": "18.04-LTS",
-        "loadBalancersName": "hivemq-lb",
+
         "vmName": "hivemq-node",
         "asName": "hivemq-as",
         "nicName": "hivemq-node-nic",
@@ -56,7 +56,7 @@
         "subnetName": "hivemq-cluster-subnet",
         "subnetPrefix": "10.0.0.0/24",
         "virtualNetworkName": "hivemq-cluster-vnet",
-        "backendPoolName": "hivemq-node",
+       
      
         "linuxConfiguration": {
             "disablePasswordAuthentication": true,
@@ -149,8 +149,7 @@
             },
             "dependsOn": [
                 "publicIpLoop",
-                "[variables('virtualNetworkName')]",
-                "[variables('loadBalancersName')]"
+                "[variables('virtualNetworkName')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -163,12 +162,7 @@
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
                                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
-                            },
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('loadBalancersName'), variables('backendPoolName'))]"
-                                }
-                            ]
+                            }
                         }
                     }
                 ]
@@ -241,6 +235,7 @@
                         "[variables('storageAccountName')]",
                         "[resourceId('Microsoft.Compute/virtualMachines', concat(variables('vmName'), copyIndex()))]"
                     ],
+                    
                     "properties": {
                         "publisher": "Microsoft.Azure.Extensions",
                         "type": "CustomScript",
