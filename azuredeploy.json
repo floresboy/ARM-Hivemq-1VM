@@ -11,6 +11,7 @@
             }
         },
 
+
         "authenticationType": {
             "type": "string",
             "defaultValue": "password",

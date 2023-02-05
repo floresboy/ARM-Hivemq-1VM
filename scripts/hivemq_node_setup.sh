@@ -3,6 +3,7 @@ STORAGE_ACCESS_KEY=$2
 STORAGE_CONTAINER_NAME=$3
 
 
+
 EXTENSION_PROPERTIES_PATH="/opt/hivemq/extensions/hivemq-azure-cluster-discovery-extension/azDiscovery.properties"
 HIVEMQ_DOWNLOAD_LINK="https://www.hivemq.com/releases/hivemq-${HIVEMQ_VERSION}.zip"
 
