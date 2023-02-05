@@ -10,6 +10,14 @@
                 "description": "User name for the Virtual Machine"
             }
         },
+
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
         "authenticationType": {
             "type": "string",
             "defaultValue": "password",
@@ -80,7 +88,8 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
             "name": "[variables('storageAccountName')]",
-            "location": "[resourceGroup().location]",
+            // "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
@@ -109,7 +118,8 @@
                 "name": "publicIpLoop",
                 "count": "[variables('numberOfInstances')]"
             },
-            "location": "[resourceGroup().location]",
+            // "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic"
             }
@@ -119,7 +129,7 @@
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2019-11-01",
             "name": "[variables('virtualNetworkName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -141,7 +151,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-11-01",
             "name": "[concat(variables('nicName'), copyIndex())]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "copy": {
                 "name": "nicLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -172,7 +182,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-12-01",
             "name": "[concat(variables('vmName'), copyIndex())]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -225,7 +235,7 @@
                     "type": "extensions",
                     "apiVersion": "2019-12-01",
                     "name": "[concat('hivemq-node-setup-extension-', copyIndex())]",
-                    "location": "[resourceGroup().location]",
+                    "location": "[parameters('location')]",
                     "dependsOn": [
                         "[variables('storageAccountName')]",
                         "[resourceId('Microsoft.Compute/virtualMachines', concat(variables('vmName'), copyIndex()))]"
@@ -234,6 +244,7 @@
                     "properties": {
                         "publisher": "Microsoft.Azure.Extensions",
                         "type": "CustomScript",
+                        "location": "[parameters('location')]",
                         "typeHandlerVersion": "2.0",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
