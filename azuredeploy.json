@@ -4,8 +4,8 @@
     "parameters": {
         "adminUsername": {
             "type": "string",
-            "defaultValue": "",
-            "minLength": 1,
+            "defaultValue": "1234567890",
+            "minLength": 9,
             "metadata": {
                 "description": "User name for the Virtual Machine"
             }
@@ -37,20 +37,14 @@
         },
         "hivemqVersion": {
             "type": "string",
-            "defaultValue": "4.6.0",
+            "defaultValue": "4.10.0",
             "metadata": {
-                "description": "The HiveMQ Version"
-            }
-        },
-        "numberOfInstances": {
-            "type": "int",
-            "defaultValue": 2,
-            "metadata": {
-                "description": "Number of VMs to deploy"
+                "description": "The HiveMQ Version your prefer"
             }
         }
     },
     "variables": {
+        "numberOfInstances" : 2,
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "ubuntuOSVersion": "18.04-LTS",
@@ -63,10 +57,7 @@
         "subnetPrefix": "10.0.0.0/24",
         "virtualNetworkName": "hivemq-cluster-vnet",
         "backendPoolName": "hivemq-node",
-        "frontendName": "LoadBalancerFrontEnd",
-        "healthProbeHivemq": "hivmeq-node-health",
-        "healthProbeControlCenter": "hivemq-control-center-health",
-        "loadBalancerPublicIpName": "[concat(variables('loadBalancersName'), 'public-ip')]",
+     
         "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
@@ -101,7 +92,8 @@
             },
             "resources": [
                 {
-                    "type": "blobServices/containers",
+                    // "type": "blobServices/containers",
+                    "type": "containers",
                     "apiVersion": "2019-06-01",
                     "name": "[concat('default/', variables('containerName'))]",
                     "dependsOn": [
@@ -117,18 +109,8 @@
             "name": "[concat(variables('vmName'), copyIndex(),'-public-ip')]",
             "copy": {
                 "name": "publicIpLoop",
-                "count": "[parameters('numberOfInstances')]"
+                "count": "[variables('numberOfInstances')]"
             },
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-            }
-        },
-
-        {
-            "apiVersion": "2020-05-01",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables('loadBalancerPublicIpName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic"
@@ -164,7 +146,7 @@
             "location": "[resourceGroup().location]",
             "copy": {
                 "name": "nicLoop",
-                "count": "[parameters('numberOfInstances')]"
+                "count": "[variables('numberOfInstances')]"
             },
             "dependsOn": [
                 "publicIpLoop",
@@ -201,7 +183,7 @@
             "location": "[resourceGroup().location]",
             "copy": {
                 "name": "virtualMachineLoop",
-                "count": "[parameters('numberOfInstances')]"
+                "count": "[variables('numberOfInstances')]"
             },
             "dependsOn": [
                 "nicLoop",
@@ -277,117 +259,7 @@
                     }
                 }
             ]
-        },
-
-
-        {
-            "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2019-11-01",
-            "name": "[variables('loadBalancersName')]",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Basic"
-            },
-            "dependsOn": [
-                "[variables('loadBalancerPublicIpName')]",
-                "[variables('virtualNetworkName')]"
-            ],
-            "properties": {
-                "frontendIPConfigurations": [
-                    {
-                        "name": "[variables('frontendName')]",
-                        "properties": {
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('loadBalancerPublicIpName'))]"
-                            }
-                        }
-                    }
-                ],
-                "backendAddressPools": [
-                    {
-                        "name": "[variables('backendPoolName')]"
-                    }
-                ],
-                "loadBalancingRules": [
-                    {
-                        "name": "[concat(variables('loadBalancersName'), '-rule1')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('loadBalancersName'), variables('frontendName'))]"
-                            },
-                            "frontendPort": 8080,
-                            "backendPort": 8080,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 5,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false,
-                            "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('loadBalancersName'), variables('backendPoolName'))]"
-                            },
-                            "probe": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('loadBalancersName'), variables('healthProbeControlCenter'))]"
-                            }
-                        }
-                    },
-                    {
-                        "name": "[concat(variables('loadBalancersName'), '-rule2')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('loadBalancersName'), variables('frontendName'))]"
-                            },
-                            "frontendPort": 1883,
-                            "backendPort": 1883,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 5,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false,
-                            "loadDistribution": "SourceIPProtocol",
-                            "backendAddressPool": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('loadBalancersName'), variables('backendPoolName'))]"
-                            },
-                            "probe": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('loadBalancersName'), variables('healthProbeHivemq'))]"
-                            }
-                        }
-                    }
-                ],
-                "probes": [
-                    {
-                        "name": "[variables('healthProbeHivemq')]",
-                        "properties": {
-                            "protocol": "Tcp",
-                            "port": 1883,
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2
-                        }
-                    },
-                    {
-                        "name": "[variables('healthProbeControlCenter')]",
-                        "properties": {
-                            "protocol": "Tcp",
-                            "port": 8080,
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2
-                        }
-                    }
-                ]
-            }
-        },
-
-
-        {
-            "type": "Microsoft.Compute/availabilitySets",
-            "apiVersion": "2019-03-01",
-            "name": "[variables('asName')]",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Aligned"
-            },
-            "properties": {
-                "platformUpdateDomainCount": 2,
-                "platformFaultDomainCount": 2
-            }
         }
+
     ]
 }
