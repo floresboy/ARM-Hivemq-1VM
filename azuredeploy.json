@@ -79,11 +79,14 @@
         "setupScriptLink": "https://raw.githubusercontent.com/floresboy/ARM-Hivemq-1VM/main/scripts/hivemq_node_setup.sh"
     },
     "resources": [
-     {
+
+        {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
-            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAny1883Inbound')]",
-    
+            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom1883Inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
+            ],
             "properties": {
                 "protocol": "*",
                 "sourcePortRange": "*",
@@ -91,7 +94,7 @@
                 "sourceAddressPrefix": "*",
                 "destinationAddressPrefix": "*",
                 "access": "Allow",
-                "priority": 110, 
+                "priority": 110,
                 "direction": "Inbound",
                 "sourcePortRanges": [],
                 "destinationPortRanges": [],
@@ -102,8 +105,10 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
-            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAny8080Inbound')]",
-            
+            "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom8080Inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
+            ],
             "properties": {
                 "protocol": "*",
                 "sourcePortRange": "*",
@@ -123,7 +128,9 @@
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
             "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnySSHInbound')]",
-            
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
+            ],
             "properties": {
                 "protocol": "TCP",
                 "sourcePortRange": "*",
@@ -143,17 +150,17 @@
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2022-07-01",
             "name": "[parameters('networkSecurityGroups_NSG_name')]",
-            "location": "[resourceGroup().location]",
+            "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny1883Inbound')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom1883Inbound')]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnySSHInbound')]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny8080Inbound')]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom8080Inbound')]"
             ],
             "properties": {
                 "securityRules": [
                     {
-                        "name": "AllowAny1883Inbound",
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny1883Inbound')]",
+                        "name": "AllowAnyCustom1883Inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom1883Inbound')]",
                         "type": "Microsoft.Network/networkSecurityGroups/securityRules",
                         "properties": {
                             "protocol": "*",
@@ -190,8 +197,8 @@
                         }
                     },
                     {
-                        "name": "AllowAny8080Inbound",
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAny8080Inbound')]",
+                        "name": "AllowAnyCustom8080Inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom8080Inbound')]",
                         "type": "Microsoft.Network/networkSecurityGroups/securityRules",
                         "properties": {
                             "protocol": "*",
@@ -211,6 +218,7 @@
                 ]
             }
         },
+
 
         {
             "type": "Microsoft.Storage/storageAccounts",
