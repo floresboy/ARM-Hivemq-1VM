@@ -50,7 +50,6 @@
         "ubuntuOSVersion": "18.04-LTS",
 
         "vmName": "hivemq-node",
-        "asName": "hivemq-as",
         "nicName": "hivemq-node-nic",
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "hivemq-cluster-subnet",
