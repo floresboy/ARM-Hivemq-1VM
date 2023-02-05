@@ -84,6 +84,7 @@
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
             "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom1883Inbound')]",
+            "location": "[resourceGroup().location]",
             //"dependsOn": [
             //    "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
             //],
@@ -106,6 +107,7 @@
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
             "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnyCustom8080Inbound')]",
+            "location": "[resourceGroup().location]",
             //"dependsOn": [
             //    "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
             //],
@@ -128,6 +130,7 @@
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2022-07-01",
             "name": "[concat(parameters('networkSecurityGroups_NSG_name'), '/AllowAnySSHInbound')]",
+            "location": "[resourceGroup().location]",
             //"dependsOn": [
             //    "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
             //],
@@ -150,7 +153,7 @@
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2022-07-01",
             "name": "[parameters('networkSecurityGroups_NSG_name')]",
-            "location": "westeurope",
+            "location": "[resourceGroup().location]",
             //"dependsOn": [
             //    "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom1883Inbound')]",
             //    "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnySSHInbound')]",
