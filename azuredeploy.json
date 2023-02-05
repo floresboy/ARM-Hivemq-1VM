@@ -247,7 +247,7 @@
                     }
                 ],
                 "networkSecurityGroup" : {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroups_NSG_name'), copyIndex()))]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_NSG_name'))]"
                 }
             }
         },
