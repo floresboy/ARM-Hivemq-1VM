@@ -155,7 +155,7 @@
             //    "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom1883Inbound')]",
             //    "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnySSHInbound')]",
             //    "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_NSG_name'), 'AllowAnyCustom8080Inbound')]"
-            ],
+            //],
             "properties": {
                 "securityRules": [
                     {
