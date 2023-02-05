@@ -52,7 +52,7 @@
         }
     },
     "variables": {
-        "numberOfInstances" : 2,
+        "numberOfInstances" : 1,
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "ubuntuOSVersion": "18.04-LTS",
